@@ -4,21 +4,25 @@ import { middyfy } from '@libs/lambda';
 import schema from './schema';
 import cors from '@middy/http-cors'
 import mockProductList from '../../../mock/mockDataProductList';
+import { CustomErr, Product } from 'src/types/api-types';
 
 const getProductsById: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
   try {
-    const data = await mockProductList;
+    const data : Product[] = await mockProductList;
     if(data.length < 1) {
-      return formatJSONResponse({error: 'No products available'}, 404);
+      let newError : CustomErr = {message: 'No products available' }
+      return formatJSONResponse({newError}, 404);
     }
     const {productId} = event.pathParameters;
-    const foundProduct = data.filter(elem => elem.id === productId);
+    const foundProduct : Product = data.find(elem => elem.id === productId);
     if(foundProduct === undefined) {
-      return formatJSONResponse({error: 'Product not found'}, 404);
+      let newError : CustomErr = {message: 'Product not found' }
+      return formatJSONResponse({newError}, 404);
     }
     return formatJSONResponse({foundProduct}, 200);
   } catch (error) {
-    return formatJSONResponse({error}, 400);
+    let newError = error;
+    return formatJSONResponse({newError}, 400);
   }
 };
 
