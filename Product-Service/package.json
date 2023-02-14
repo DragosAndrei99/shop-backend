@@ -22,6 +22,7 @@
     "esbuild": "^0.14.54",
     "json-schema-to-ts": "^1.5.0",
     "serverless": "^3.0.0",
+    "serverless-auto-swagger": "^2.12.0",
     "serverless-esbuild": "^1.37.3",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.9.0",
