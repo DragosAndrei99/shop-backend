@@ -20,16 +20,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Succesful API response",
-            "schema": {
-              "$ref": "#/definitions/Product"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/CustomErr"
-            }
+            "description": "200 response"
           }
         }
       }
@@ -55,84 +46,12 @@
         ],
         "responses": {
           "200": {
-            "description": "Succesful API response",
-            "schema": {
-              "$ref": "#/definitions/Products"
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {
-              "$ref": "#/definitions/CustomErr"
-            }
-          },
-          "404": {
-            "description": "Resource not found",
-            "schema": {
-              "$ref": "#/definitions/CustomErr"
-            }
+            "description": "200 response"
           }
         }
       }
     }
   },
-  "definitions": {
-    "Product": {
-      "properties": {
-        "count": {
-          "title": "Product.count",
-          "type": "number"
-        },
-        "description": {
-          "title": "Product.description",
-          "type": "string"
-        },
-        "id": {
-          "title": "Product.id",
-          "type": "string"
-        },
-        "price": {
-          "title": "Product.price",
-          "type": "number"
-        },
-        "title": {
-          "title": "Product.title",
-          "type": "string"
-        }
-      },
-      "required": [
-        "count",
-        "description",
-        "id",
-        "price",
-        "title"
-      ],
-      "additionalProperties": false,
-      "title": "Product",
-      "type": "object"
-    },
-    "Products": {
-      "items": {
-        "$ref": "#/definitions/Product",
-        "title": "Products.[]"
-      },
-      "title": "Products.[]",
-      "type": "array"
-    },
-    "CustomErr": {
-      "properties": {
-        "message": {
-          "title": "CustomErr.message",
-          "type": "string"
-        }
-      },
-      "required": [
-        "message"
-      ],
-      "additionalProperties": false,
-      "title": "CustomErr",
-      "type": "object"
-    }
-  },
+  "definitions": {},
   "securityDefinitions": {}
 };
