@@ -6,7 +6,7 @@ export interface IProduct {
   title: string;
 }
 
-export type IProducts = IProduct[]
+export type IProducts = IProduct[];
 
 export interface ICustomErr {
   message: string;

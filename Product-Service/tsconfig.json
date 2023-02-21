@@ -10,7 +10,11 @@
     "target": "ES2020",
     "outDir": "lib"
   },
-  "include": ["src/**/*.ts", "serverless.ts", "src/services/mock-data/mockDataProductList.ts"],
+  "include": [
+    "src/**/*.ts",
+    "serverless.ts",
+    "src/services/mock-data/mockDataProductList.ts"
+  ],
   "exclude": [
     "node_modules/**/*",
     ".serverless/**/*",
