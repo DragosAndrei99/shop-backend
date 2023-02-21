@@ -1,16 +1,4 @@
-export interface IProduct {
-  count: number;
-  description: string;
-  id: string;
-  price: number;
-  title: string;
-}
-
-export type IProducts = IProduct[]
-
-export interface ICustomErr {
-  message: string;
-}
+import { IProduct, IProducts } from "src/types/api-types";
 
 export interface ProductServiceInterface {
   getProductById :  (id: string) => Promise<IProduct>;

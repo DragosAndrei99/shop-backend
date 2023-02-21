@@ -20,7 +20,16 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "200 response"
+            "description": "Successful API Response",
+            "schema": {
+              "$ref": "#/definitions/IProducts"
+            }
+          },
+          "404": {
+            "description": "Products not found",
+            "schema": {
+              "$ref": "#/definitions/ICustomErr"
+            }
           }
         }
       }
@@ -46,12 +55,78 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response"
+            "description": "Successful API Response",
+            "schema": {
+              "$ref": "#/definitions/IProduct"
+            }
+          },
+          "404": {
+            "description": "Product not found",
+            "schema": {
+              "$ref": "#/definitions/ICustomErr"
+            }
           }
         }
       }
     }
   },
-  "definitions": {},
+  "definitions": {
+    "IProduct": {
+      "properties": {
+        "count": {
+          "title": "IProduct.count",
+          "type": "number"
+        },
+        "description": {
+          "title": "IProduct.description",
+          "type": "string"
+        },
+        "id": {
+          "title": "IProduct.id",
+          "type": "string"
+        },
+        "price": {
+          "title": "IProduct.price",
+          "type": "number"
+        },
+        "title": {
+          "title": "IProduct.title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "description",
+        "id",
+        "price",
+        "title"
+      ],
+      "additionalProperties": false,
+      "title": "IProduct",
+      "type": "object"
+    },
+    "IProducts": {
+      "items": {
+        "$ref": "#/definitions/IProduct",
+        "title": "IProducts.[]"
+      },
+      "title": "IProducts.[]",
+      "type": "array"
+    },
+    "ICustomErr": {
+      "properties": {
+        "message": {
+          "title": "ICustomErr.message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "message"
+      ],
+      "additionalProperties": false,
+      "title": "ICustomErr",
+      "type": "object"
+    }
+  },
   "securityDefinitions": {}
 };

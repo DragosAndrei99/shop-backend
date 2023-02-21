@@ -1,6 +1,11 @@
 import type { AWS } from '@serverless/typescript';
 
-const serverlessConfiguration: AWS = {
+// workaround needed to allow adding necessary properties for swagger to generate file
+interface CustomAWS extends AWS {
+	functions: any;
+}
+
+const serverlessConfiguration: CustomAWS = {
 	service: 'product-service',
 	frameworkVersion: '3',
 	plugins: ['serverless-auto-swagger', 'serverless-esbuild'],
@@ -27,7 +32,18 @@ const serverlessConfiguration: AWS = {
 					http: {
 						method: 'get',
 						path: 'products',
-						cors: true
+						cors: true,
+						responses: {
+              200: {
+                description: 'Successful API Response',
+                bodyType: 'IProducts',
+              },
+              404: {
+                description:
+                  'Products not found',
+                bodyType: 'ICustomErr',
+              }
+						}
 					}
 				}
 			]
@@ -39,7 +55,18 @@ const serverlessConfiguration: AWS = {
 					http: {
 						method: 'get',
 						path: 'products/{productId}',
-						cors: true
+						cors: true,
+						responses: {
+              200: {
+                description: 'Successful API Response',
+                bodyType: 'IProduct',
+              },
+              404: {
+                description:
+                  'Product not found',
+                bodyType: 'ICustomErr',
+              }
+						}
 					}
 				}
 			]
