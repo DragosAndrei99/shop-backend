@@ -1,4 +1,4 @@
-import { formatJSONResponse } from "@libs/api-gateway";
+import { formatJSONResponse } from "../libs/api-gateway";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { ICustomErr } from "src/types/api-types";
 import { ProductServiceInterface } from "src/services/productServiceInterface";
@@ -15,6 +15,6 @@ export const getProductsByIdFunction =
       }
       return formatJSONResponse(product, 200);
     } catch (error) {
-      return formatJSONResponse(error, 400);
+      return formatJSONResponse(error.message, 500);
     }
   };
