@@ -11,6 +11,15 @@ const serverlessConfiguration: CustomAWS = {
   plugins: ["serverless-auto-swagger", "serverless-esbuild"],
   provider: {
     name: "aws",
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: [
+          "dynamodb:*"
+        ],
+        Resource: "*"
+      }
+    ],
     runtime: "nodejs14.x",
     stage: "dev",
     region: "us-east-1",
@@ -21,6 +30,8 @@ const serverlessConfiguration: CustomAWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
+      PRODUCTS_TABLE: "CloudX_Course_Products",
+      STOCKS_TABLE: "CloudX_Course_Stocks"
     },
   },
   // import the function via paths

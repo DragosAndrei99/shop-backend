@@ -71,6 +71,25 @@
     }
   },
   "definitions": {
+    "IStock": {
+      "properties": {
+        "count": {
+          "title": "IStock.count",
+          "type": "number"
+        },
+        "product_id": {
+          "title": "IStock.product_id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "count",
+        "product_id"
+      ],
+      "additionalProperties": false,
+      "title": "IStock",
+      "type": "object"
+    },
     "IProduct": {
       "properties": {
         "count": {
@@ -95,7 +114,6 @@
         }
       },
       "required": [
-        "count",
         "description",
         "id",
         "price",
