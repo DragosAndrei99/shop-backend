@@ -4,13 +4,14 @@ import { formatJSONResponse } from "../libs/api-gateway";
 import createEvent from "mock-aws-events";
 import { ICustomErr } from "src/types/api-types";
 
-let mockProductService : {getProductById: jest.Mock, getAllProducts: jest.Mock};
+let mockProductService : {getProductById: jest.Mock, getAllProducts: jest.Mock, create: jest.Mock};
 const event = createEvent("aws:apiGateway", {} );
 
 beforeEach(() => {
   mockProductService = {
     getProductById : jest.fn(),
-    getAllProducts: jest.fn()
+    getAllProducts: jest.fn(),
+    create: jest.fn()
   }
 });
 

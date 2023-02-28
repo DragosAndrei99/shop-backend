@@ -28,6 +28,56 @@ export class DynamoProductService implements ProductServiceInterface {
     return result;
   };
 
+  public async create(product: IProduct) {
+    try {
+      const productFields = {...product};
+      delete productFields.id;
+      delete productFields.count;
+      const productFieldsExpression = DynamoProductService.generateUpdateQuery(productFields);
+      const stockFieldsExpression = DynamoProductService.generateUpdateQuery({count: product.count});
+      const transaction = await dynamo.transactWrite({
+        TransactItems:[
+          {
+            Update: {
+              TableName: process.env.PRODUCTS_TABLE,
+              Key: {id: product.id},
+              ...productFieldsExpression,
+              ConditionExpression: 'attribute_not_exists(id)',
+              ReturnValuesOnConditionCheckFailure: "ALL_OLD"
+            }
+          },
+          {
+            Update: {
+              TableName: process.env.STOCKS_TABLE,
+              Key: {product_id: product.id},
+              ...stockFieldsExpression,
+              ConditionExpression: 'attribute_not_exists(product_id)',
+              ReturnValuesOnConditionCheckFailure: "ALL_OLD"
+            }
+          }
+        ]
+      }).promise()
+      return transaction;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  private static generateUpdateQuery(fields: any) {
+    let exp = {
+        UpdateExpression: 'set',
+        ExpressionAttributeNames: {},
+        ExpressionAttributeValues: {}
+    }
+    Object.entries(fields).forEach(([key, item]) => {
+        exp.UpdateExpression += ` #${key} = :${key},`;
+        exp.ExpressionAttributeNames[`#${key}`] = key;
+        exp.ExpressionAttributeValues[`:${key}`] = item
+    })
+    exp.UpdateExpression = exp.UpdateExpression.slice(0, -1);
+    return exp;
+}
+
   private static async scanDataFromDynamo(TABLE_NAME : string) {
     const data = await dynamo.scan({
       TableName: TABLE_NAME

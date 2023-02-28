@@ -1,4 +1,4 @@
-import { middyfy } from "./src/libs/lambda";
+import { handleErrors, middyfy, validate } from "./src/libs/lambda";
 import cors from "@middy/http-cors";
 import * as functions from "./src/functions";
 // import { InMemoryDataProductServiceClass } from "./src/services/inMemoryDataProductService";
@@ -12,3 +12,4 @@ export const getProductsList = middyfy(
 export const getProductsById = middyfy(
   functions.getProductsByIdFunction(productService)
 ).use(cors());
+export const createProduct = handleErrors(validate(middyfy(functions.createProduct(productService))));

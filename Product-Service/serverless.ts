@@ -80,6 +80,28 @@ const serverlessConfiguration: CustomAWS = {
         },
       ],
     },
+    createProduct: {
+      handler: "./handler.createProduct",
+      events: [
+        {
+          http: {
+            method: "post",
+            path: "products",
+            cors: true,
+            responses: {
+              200: {
+                description: "Successful API Response",
+                bodyType: "IProduct",
+              },
+              404: {
+                description: "Product was not created",
+                bodyType: "ICustomErr",
+              },
+            },
+          },
+        },
+      ],
+    }
   },
   package: { individually: true },
   custom: {

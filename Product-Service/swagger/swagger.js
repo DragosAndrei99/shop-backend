@@ -32,6 +32,32 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "createProduct",
+        "description": "",
+        "operationId": "createProduct.post.products",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful API Response",
+            "schema": {
+              "$ref": "#/definitions/IProduct"
+            }
+          },
+          "404": {
+            "description": "Product was not created",
+            "schema": {
+              "$ref": "#/definitions/ICustomErr"
+            }
+          }
+        }
       }
     },
     "/products/{productId}": {
