@@ -14,11 +14,9 @@ const serverlessConfiguration: CustomAWS = {
     iamRoleStatements: [
       {
         Effect: "Allow",
-        Action: [
-          "dynamodb:*"
-        ],
-        Resource: "*"
-      }
+        Action: ["dynamodb:*"],
+        Resource: "*",
+      },
     ],
     runtime: "nodejs14.x",
     stage: "dev",
@@ -32,7 +30,7 @@ const serverlessConfiguration: CustomAWS = {
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
       PRODUCTS_TABLE: "CloudX_Course_Products",
       STOCKS_TABLE: "CloudX_Course_Stocks",
-      POWERTOOLS_SERVICE_NAME: "Product-Service"
+      POWERTOOLS_SERVICE_NAME: "Product-Service",
     },
   },
   // import the function via paths
@@ -102,7 +100,7 @@ const serverlessConfiguration: CustomAWS = {
           },
         },
       ],
-    }
+    },
   },
   package: { individually: true },
   custom: {

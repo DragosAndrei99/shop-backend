@@ -5,7 +5,8 @@
   "main": "serverless.ts",
   "scripts": {
     "deploy": "sls deploy",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "format": "prettier --write ."
   },
   "engines": {
     "node": ">=14.15.0"
