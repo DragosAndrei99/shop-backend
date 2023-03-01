@@ -11,6 +11,7 @@
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@aws-lambda-powertools/logger": "^1.5.1",
     "@middy/core": "^3.4.0",
     "@middy/http-cors": "^4.2.3",
     "@middy/http-error-handler": "^4.2.6",

@@ -5,6 +5,10 @@ import validator from "@middy/validator";
 import { transpileSchema } from '@middy/validator/transpile';
 import httpErrorHandler from "@middy/http-error-handler";
 
+import { Logger, injectLambdaContext } from '@aws-lambda-powertools/logger';
+
+const logger = new Logger();
+
 const inputSchema = {
   type: "object",
   properties: {
@@ -27,7 +31,7 @@ export const validate = (handler) => {
 }
 
 export const middyfy = (handler) => {
-  return middy(handler).use(middyJsonBodyParser());
+  return middy(handler).use(middyJsonBodyParser()).use(injectLambdaContext(logger, { logEvent: true }));
 };
 
 export const handleErrors = (handler) => {

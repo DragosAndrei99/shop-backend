@@ -31,7 +31,8 @@ const serverlessConfiguration: CustomAWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
       PRODUCTS_TABLE: "CloudX_Course_Products",
-      STOCKS_TABLE: "CloudX_Course_Stocks"
+      STOCKS_TABLE: "CloudX_Course_Stocks",
+      POWERTOOLS_SERVICE_NAME: "Product-Service"
     },
   },
   // import the function via paths
