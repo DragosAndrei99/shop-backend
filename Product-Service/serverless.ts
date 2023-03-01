@@ -87,12 +87,13 @@ const serverlessConfiguration: CustomAWS = {
             method: "post",
             path: "products",
             cors: true,
+            bodyType: "IProduct",
             responses: {
               200: {
                 description: "Successful API Response",
                 bodyType: "IProduct",
               },
-              404: {
+              400: {
                 description: "Product was not created",
                 bodyType: "ICustomErr",
               },

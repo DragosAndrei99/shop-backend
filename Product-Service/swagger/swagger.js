@@ -43,7 +43,17 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Body required in the request",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IProduct"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful API Response",
