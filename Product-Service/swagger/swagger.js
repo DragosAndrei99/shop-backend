@@ -61,7 +61,7 @@
               "$ref": "#/definitions/IProduct"
             }
           },
-          "404": {
+          "400": {
             "description": "Product was not created",
             "schema": {
               "$ref": "#/definitions/ICustomErr"

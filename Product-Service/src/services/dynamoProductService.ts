@@ -30,8 +30,8 @@ export class DynamoProductService implements ProductServiceInterface {
       process.env.STOCKS_TABLE,
       id
     )) as IStock[];
-    if (!product || !stock) {
-      throw new Error();
+    if (product.length < 1 || stock.length < 1) {
+      return undefined;
     }
     const result: IProduct = {
       ...product[0],
