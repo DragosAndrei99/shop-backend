@@ -1,7 +1,9 @@
 import products from "./mock-data/mockDataProductList";
 import { ProductServiceInterface } from "./productServiceInterface";
 
-class InMemoryDataProductServiceClass implements ProductServiceInterface {
+class InMemoryDataProductServiceClass
+  implements Partial<ProductServiceInterface>
+{
   getAllProducts() {
     return Promise.resolve(products);
   }

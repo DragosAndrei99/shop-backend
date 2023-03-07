@@ -11,6 +11,13 @@ const serverlessConfiguration: CustomAWS = {
   plugins: ["serverless-auto-swagger", "serverless-esbuild"],
   provider: {
     name: "aws",
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: ["dynamodb:*"],
+        Resource: "*",
+      },
+    ],
     runtime: "nodejs14.x",
     stage: "dev",
     region: "us-east-1",
@@ -21,6 +28,9 @@ const serverlessConfiguration: CustomAWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
+      PRODUCTS_TABLE: "CloudX_Course_Products",
+      STOCKS_TABLE: "CloudX_Course_Stocks",
+      POWERTOOLS_SERVICE_NAME: "Product-Service",
     },
   },
   // import the function via paths
@@ -62,6 +72,29 @@ const serverlessConfiguration: CustomAWS = {
               },
               404: {
                 description: "Product not found",
+                bodyType: "ICustomErr",
+              },
+            },
+          },
+        },
+      ],
+    },
+    createProduct: {
+      handler: "./handler.createProduct",
+      events: [
+        {
+          http: {
+            method: "post",
+            path: "products",
+            cors: true,
+            bodyType: "IProduct",
+            responses: {
+              200: {
+                description: "Successful API Response",
+                bodyType: "IProduct",
+              },
+              400: {
+                description: "Product was not created",
                 bodyType: "ICustomErr",
               },
             },

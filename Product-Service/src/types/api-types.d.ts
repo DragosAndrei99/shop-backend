@@ -1,5 +1,10 @@
-export interface IProduct {
+export interface IStock {
   count: number;
+  product_id: string;
+}
+
+export interface IProduct {
+  count?: number;
   description: string;
   id: string;
   price: number;
