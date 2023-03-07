@@ -105,6 +105,10 @@ const serverlessConfiguration: CustomAWS = {
   },
   package: { individually: true },
   custom: {
+    autoswagger: {
+      apiType: 'http',
+      basePath: '/${sls:stage}'
+    },
     esbuild: {
       bundle: true,
       minify: false,
