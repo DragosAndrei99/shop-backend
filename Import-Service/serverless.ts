@@ -13,10 +13,10 @@ const serverlessConfiguration: CustomAWS = {
     runtime: "nodejs14.x",
     iamRoleStatements: [
       {
-        Effect: 'Allow',
-        Action: 's3:*',
-        Resource: 'arn:aws:s3:::node-aws-task5/*'
-      }
+        Effect: "Allow",
+        Action: "s3:*",
+        Resource: "arn:aws:s3:::node-aws-task5/*",
+      },
     ],
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -25,8 +25,8 @@ const serverlessConfiguration: CustomAWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
-      S3_BUCKET_NAME: 'node-aws-task5'
-    }
+      S3_BUCKET_NAME: "node-aws-task5",
+    },
   },
   // import the function via paths
   functions: {
@@ -41,14 +41,14 @@ const serverlessConfiguration: CustomAWS = {
             queryStringParameters: {
               name: {
                 required: true,
-                type: 'string',
-                description: 'name of csv file'
-              }
+                type: "string",
+                description: "name of csv file",
+              },
             },
-            produces: 'text/plain',
+            produces: "text/plain",
             responses: {
               200: {
-                description: "Successful API Response"
+                description: "Successful API Response",
               },
               400: {
                 description: "Not a valid csv file",
@@ -63,8 +63,8 @@ const serverlessConfiguration: CustomAWS = {
   package: { individually: true },
   custom: {
     autoswagger: {
-      apiType: 'http',
-      basePath: '/${sls:stage}'
+      apiType: "http",
+      basePath: "/${sls:stage}",
     },
     esbuild: {
       bundle: true,
