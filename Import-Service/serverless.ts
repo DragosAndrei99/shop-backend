@@ -59,6 +59,23 @@ const serverlessConfiguration: CustomAWS = {
         },
       ],
     },
+    importFileParser: {
+      handler: "./handler.importFileParser",
+      events: [
+        {
+          s3: {
+            bucket: "node-aws-task5",
+            event: "s3:ObjectCreated:*",
+            rules: [
+              {
+                prefix: "uploaded/",
+              },
+            ],
+            existing: true,
+          },
+        },
+      ],
+    },
   },
   package: { individually: true },
   custom: {

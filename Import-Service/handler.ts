@@ -5,3 +5,5 @@ import cors from "@middy/http-cors";
 export const importProductsFile = middyfy(
   functions.importProductsFileFunction
 ).use(cors());
+
+export const importFileParser = functions.importFileParserFunction;
