@@ -46,6 +46,7 @@ export const importFileParserFunction = async (event: S3Event) => {
       .pipe(stripBom())
       .pipe(csvParser())
       .on("data", async (data) => {
+        // console.log(data);
         await sendMessageToSqs(data);
       })
       .on("end", () => {
@@ -53,7 +54,6 @@ export const importFileParserFunction = async (event: S3Event) => {
       });
 
     await moveFile(key);
-
     return { message: "success" };
   } catch (error) {
     console.log(error);
