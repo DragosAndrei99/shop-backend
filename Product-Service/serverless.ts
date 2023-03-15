@@ -17,7 +17,6 @@ const serverlessConfiguration: CustomAWS = {
         Action: ["dynamodb:*"],
         Resource: "*",
       },
-      
     ],
     runtime: "nodejs14.x",
     stage: "dev",
@@ -106,33 +105,30 @@ const serverlessConfiguration: CustomAWS = {
     catalogBatchProcess: {
       handler: "./handler.catalogBatchProcess",
       events: [
-          {
-            sqs:
-            {
-              arn: "arn:aws:sqs:us-east-1:490917832704:catalogItemsQueue",
-              batchSize: 5
-            }
-        }
-      ]
-    }
+        {
+          sqs: {
+            arn: "arn:aws:sqs:us-east-1:490917832704:catalogItemsQueue",
+            batchSize: 5,
+          },
+        },
+      ],
+    },
   },
   resources: {
     Resources: {
-      catalogItemsQueue:
-      {
+      catalogItemsQueue: {
         Type: "AWS::SQS::Queue",
-        Properties:
-        {
-          QueueName: `catalogItemsQueue`
-        }
-      }
-    }
+        Properties: {
+          QueueName: `catalogItemsQueue`,
+        },
+      },
+    },
   },
   package: { individually: true },
   custom: {
     autoswagger: {
-      apiType: 'http',
-      basePath: '/${sls:stage}'
+      apiType: "http",
+      basePath: "/${sls:stage}",
     },
     esbuild: {
       bundle: true,

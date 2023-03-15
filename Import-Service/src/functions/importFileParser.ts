@@ -8,6 +8,32 @@ const sqs = new AWS.SQS({ region: "us-east-1" });
 const bucket = process.env.S3_BUCKET_NAME;
 const queueUrl = process.env.QUEUE_URL;
 
+const moveFile = async (key: string) => {
+  await s3
+    .copyObject({
+      Bucket: bucket,
+      CopySource: bucket + "/" + key,
+      Key: key.replace("uploaded", "parsed"),
+    })
+    .promise();
+
+  await s3
+    .deleteObject({
+      Bucket: bucket,
+      Key: key,
+    })
+    .promise();
+};
+
+const sendMessageToSqs = async (data) => {
+  let message = JSON.stringify(data);
+  const sqsParams = {
+    MessageBody: message,
+    QueueUrl: queueUrl,
+  };
+  await sqs.sendMessage(sqsParams).promise();
+};
+
 export const importFileParserFunction = async (event: S3Event) => {
   try {
     const key = event.Records[0].s3.object.key;
@@ -19,39 +45,16 @@ export const importFileParserFunction = async (event: S3Event) => {
     s3Stream
       .pipe(stripBom())
       .pipe(csvParser())
-      .on("data", (data) => {
-        let message = JSON.stringify(data);
-        const sqsParams = {
-          MessageBody: message,
-          QueueUrl: queueUrl
-         };
-         sqs.sendMessage(sqsParams, (err, result) => {
-          if(err) {
-            console.log(err);
-            return 
-          }
-          console.log({sqsResult: result});
-         });
+      .on("data", async (data) => {
+        await sendMessageToSqs(data);
       })
       .on("end", () => {
-      });  
+        console.log("Stream closed");
+      });
 
-    await s3
-      .copyObject({
-        Bucket: bucket,
-        CopySource: bucket + "/" + key,
-        Key: key.replace("uploaded", "parsed"),
-      })
-      .promise();
+    await moveFile(key);
 
-    await s3
-      .deleteObject({
-        Bucket: bucket,
-        Key: key,
-      })
-      .promise();
-
-    return { message: "success"};
+    return { message: "success" };
   } catch (error) {
     console.log(error);
     return { message: error.message, error };
