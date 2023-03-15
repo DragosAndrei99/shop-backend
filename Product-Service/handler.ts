@@ -15,3 +15,4 @@ export const getProductsById = middyfy(
 export const createProduct = handleErrors(
   validate(middyfy(functions.createProduct(productService)))
 );
+export const catalogBatchProcess = functions.catalogBatchProcessFunction(productService);
