@@ -14,7 +14,7 @@ const sqsMessageMock = {
       {
           "messageId": "059f36b4-87a3-44ab-83d2-661975830a7d",
           "receiptHandle": "AQEBwJnKyrHigUMZj6rYigCgxlaS3SLy0a...",
-          "body": '{"count":"32","description":"test2","id":"99999995","price":"200","title":"test"}',
+          "body": '{"id":"99999995","description":"test2","title":"test","price":"200","count":"32"}',
           "attributes": {
               "ApproximateReceiveCount": "1",
               "SentTimestamp": "1545082649183",
@@ -29,6 +29,7 @@ const sqsMessageMock = {
       }
 ]};
 
+
 const succesfulResponse = { message: "Succesfully processed batch of 5 messages" };
 
 jest.mock('aws-sdk', () => {
@@ -39,32 +40,57 @@ jest.mock('aws-sdk', () => {
   return { SNS: jest.fn(() => mockSNS) };
 });
 
+mockProductService = {
+  getProductById: jest.fn(),
+  getAllProducts: jest.fn(),
+  create: jest.fn(),
+};
+
 
 describe("catalogBatchProcess lambda", () => {
   const event = createEvent("aws:sqs", sqsMessageMock);
   let sns;
-
-  beforeEach(() => {
-    mockProductService = {
-      getProductById: jest.fn(),
-      getAllProducts: jest.fn(),
-      create: jest.fn(),
-    };
-    sns = new SNS();
-
-  });
+  sns = new SNS();
   
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it("should return success message if processing is done", async () => {
-
-    const received = await catalogBatchProcessFunction(mockProductService)(event);
     const data = JSON.parse(event.Records[0].body);
+    const message = {
+      message: "Products succesfully created",
+      body: data
+    }
+    const received = await catalogBatchProcessFunction(mockProductService)(event);
     expect(mockProductService.create).toHaveBeenCalledWith(data);
-    expect(sns.publish).toHaveBeenCalledTimes(1);
+    expect(sns.publish).toHaveBeenCalledWith({
+      TopicArn: process.env.SNS_TOPIC_ARN,
+      Message: JSON.stringify(message),
+      Subject: "Notification from catalogBatchProcess lambda"
+    });
     expect(received).toEqual(succesfulResponse);
   });
 
+  it("should handle errors when sns fails", async () => {
+    const error = new Error('Test error');
+    sns.publish.mockReturnValueOnce({
+      promise: jest.fn().mockRejectedValue(error)
+    });
+    const received = await catalogBatchProcessFunction(mockProductService)(event);
+    expect(received).toEqual(error.message);
+  });
+
+  it("should return undefined if no messages received", async () => {
+    event.Records.length = 0;
+    const received = await catalogBatchProcessFunction(mockProductService)(event);
+    expect(received).toEqual(undefined);
+  })
+
+  it("should handle errors when create product fails", async () => {
+    const error = new Error('Test error');
+    mockProductService.create.mockRejectedValueOnce(error);
+    const received = await catalogBatchProcessFunction(mockProductService)(event);
+    expect(received).toEqual(error.message);
+  });
 })
