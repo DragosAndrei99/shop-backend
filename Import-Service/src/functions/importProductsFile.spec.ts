@@ -16,7 +16,7 @@ describe("importProductsFile lambda", () => {
     });
     const statusCode = 200;
     const params = {
-      Bucket: "node-aws-task5",
+      Bucket: "node-aws-task5-2",
       Key: `uploaded/${fileName}`,
       Expires: 60,
       ContentType: "text/csv",

@@ -15,12 +15,12 @@ const serverlessConfiguration: CustomAWS = {
       {
         Effect: "Allow",
         Action: "s3:*",
-        Resource: "arn:aws:s3:::node-aws-task5/*",
+        Resource: "arn:aws:s3:::node-aws-task5-2/*",
       },
       {
         Effect: "Allow",
         Action: "sqs:SendMessage",
-        Resource: "arn:aws:sqs:us-east-1:490917832704:catalogItemsQueue",
+        Resource: "arn:aws:sqs:us-east-1:971768035993:catalogItemsQueue",
       },
     ],
     apiGateway: {
@@ -30,9 +30,9 @@ const serverlessConfiguration: CustomAWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
-      S3_BUCKET_NAME: "node-aws-task5",
+      S3_BUCKET_NAME: "node-aws-task5-2",
       QUEUE_URL:
-        "https://sqs.us-east-1.amazonaws.com/490917832704/catalogItemsQueue",
+        "https://sqs.us-east-1.amazonaws.com/971768035993/catalogItemsQueue",
     },
   },
   // import the function via paths
@@ -71,7 +71,7 @@ const serverlessConfiguration: CustomAWS = {
       events: [
         {
           s3: {
-            bucket: "node-aws-task5",
+            bucket: "node-aws-task5-2",
             event: "s3:ObjectCreated:*",
             rules: [
               {
