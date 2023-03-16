@@ -123,8 +123,7 @@ const serverlessConfiguration: CustomAWS = {
           sqs: {
             arn: "arn:aws:sqs:us-east-1:490917832704:catalogItemsQueue",
             batchSize: 5,
-            maximumConcurrency: 2,
-            maximumBatchingWindow: 60
+            maximumConcurrency: 2
           },
         },
       ],

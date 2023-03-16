@@ -16,14 +16,7 @@ const publishToSns = async (event) => {
     Subject: "Notification from catalogBatchProcess lambda"
   }
 
-  await sns.publish(params, async function (err, data) {
-    if (err) {
-      console.log(err.stack);
-      return;
-  }
-  console.log('Search push suceeded: ' + JSON.stringify(data));
-  return data;
-  }).promise();
+  await sns.publish(params).promise();
 }
 
 export const catalogBatchProcessFunction =
@@ -32,25 +25,17 @@ export const catalogBatchProcessFunction =
       console.log('No messages received');
       return;
     }
-
-    try {    
       for (const record of  event.Records) {
-        const { id, description, title, price, count }: IProduct = JSON.parse(
-          record.body
-        );
-        const product: IProduct = { id, description, title, price, count };
-        const dynamoResult = productService.create(product);
-        const snsResult =  publishToSns(product);
-        await Promise.all([dynamoResult, snsResult]);
+        try {
+          const { id, description, title, price, count }: IProduct = JSON.parse(
+            record.body
+          );
+          const product: IProduct = { id, description, title, price, count };
+          await productService.create(product);
+          await publishToSns(product);
+        } catch (error) {
+          return error;
+        }
       }
-      if (event.Records.length < 5) {
-        console.log(`Received less than 5 messages: ${event.Records.length}`);
-        return;
-      }
-      console.log('Received 5 messages successfully');
-
       return { message: "Succesfully processed batch of 5 messages" };
-    } catch (error) {
-      return error;
-    }
   };
