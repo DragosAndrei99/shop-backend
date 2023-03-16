@@ -17,6 +17,20 @@ const serverlessConfiguration: CustomAWS = {
         Action: ["dynamodb:*"],
         Resource: "*",
       },
+      {
+        Effect: "Allow",
+        Action: [
+          "sqs:ReceiveMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes",
+        ],
+        Resource: "arn:aws:sqs:us-east-1:971768035993:catalogItemsQueue",
+      },
+      {
+        Effect: "Allow",
+        Action: "sns:Publish",
+        Resource: "arn:aws:sns:us-east-1:971768035993:createProductTopic",
+      },
     ],
     runtime: "nodejs14.x",
     stage: "dev",
@@ -31,6 +45,7 @@ const serverlessConfiguration: CustomAWS = {
       PRODUCTS_TABLE: "CloudX_Course_Products",
       STOCKS_TABLE: "CloudX_Course_Stocks",
       POWERTOOLS_SERVICE_NAME: "Product-Service",
+      SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:971768035993:createProductTopic",
     },
   },
   // import the function via paths
@@ -102,12 +117,48 @@ const serverlessConfiguration: CustomAWS = {
         },
       ],
     },
+    catalogBatchProcess: {
+      handler: "./handler.catalogBatchProcess",
+      events: [
+        {
+          sqs: {
+            arn: "arn:aws:sqs:us-east-1:971768035993:catalogItemsQueue",
+            batchSize: 5,
+            maximumConcurrency: 2,
+          },
+        },
+      ],
+    },
+  },
+  resources: {
+    Resources: {
+      catalogItemsQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: `catalogItemsQueue`,
+        },
+      },
+      createProductTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          TopicName: "createProductTopic",
+        },
+      },
+      mySubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          TopicArn: { Ref: "createProductTopic" },
+          Endpoint: "dragos_vasile@epam.com",
+          Protocol: "email",
+        },
+      },
+    },
   },
   package: { individually: true },
   custom: {
     autoswagger: {
-      apiType: 'http',
-      basePath: '/${sls:stage}'
+      apiType: "http",
+      basePath: "/${sls:stage}",
     },
     esbuild: {
       bundle: true,
