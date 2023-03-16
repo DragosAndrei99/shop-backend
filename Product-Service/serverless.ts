@@ -24,12 +24,12 @@ const serverlessConfiguration: CustomAWS = {
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
         ],
-        Resource: "arn:aws:sqs:us-east-1:490917832704:catalogItemsQueue",
+        Resource: "arn:aws:sqs:us-east-1:971768035993:catalogItemsQueue",
       },
       {
         Effect: "Allow",
         Action: "sns:Publish",
-        Resource: "arn:aws:sns:us-east-1:490917832704:createProductTopic",
+        Resource: "arn:aws:sns:us-east-1:971768035993:createProductTopic",
       },
     ],
     runtime: "nodejs14.x",
@@ -45,7 +45,7 @@ const serverlessConfiguration: CustomAWS = {
       PRODUCTS_TABLE: "CloudX_Course_Products",
       STOCKS_TABLE: "CloudX_Course_Stocks",
       POWERTOOLS_SERVICE_NAME: "Product-Service",
-      SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:490917832704:createProductTopic",
+      SNS_TOPIC_ARN: "arn:aws:sns:us-east-1:971768035993:createProductTopic",
     },
   },
   // import the function via paths
@@ -122,7 +122,7 @@ const serverlessConfiguration: CustomAWS = {
       events: [
         {
           sqs: {
-            arn: "arn:aws:sqs:us-east-1:490917832704:catalogItemsQueue",
+            arn: "arn:aws:sqs:us-east-1:971768035993:catalogItemsQueue",
             batchSize: 5,
             maximumConcurrency: 2,
           },
