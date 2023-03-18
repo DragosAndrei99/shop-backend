@@ -62,6 +62,11 @@ const serverlessConfiguration: CustomAWS = {
                 bodyType: "ICustomErr",
               },
             },
+            authorizer: {
+              arn: "arn:aws:lambda:us-east-1:971768035993:function:authorization-service-dev-basicAuthorizer",
+              type: "token",
+              resultTtlInSeconds: 0
+            }
           },
         },
       ],

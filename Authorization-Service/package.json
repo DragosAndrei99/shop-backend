@@ -24,6 +24,7 @@
     "jest": "^29.4.3",
     "prettier": "2.8.4",
     "serverless": "^3.0.0",
+    "serverless-dotenv-plugin": "^4.0.2",
     "serverless-esbuild": "^1.37.3",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.4.0",
